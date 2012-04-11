@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+file_keys=$1
+key=$2
+rt=0
+
+if [ $(grep -c "^- $key:$" $file_keys) -gt 0 ]; then
+	sed -n "/^- $key:$/,/^- .*:$/p" $file_keys | sed '/^- .*:$/d' 
+else
+	rc=1
+fi
+
+exit $rc
