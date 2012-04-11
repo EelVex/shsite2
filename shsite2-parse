@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+
+###########################
+#
+#    Parse file $<n> using keys from file $<n-1>
+#	order is left to right
+#
+###########################
+
+###########################
+##  simple helper functions {{{
+
+shsite2-shell() {
+	eval "$1"
+}
+
+shsite2-parse-help() {
+	echo "shsite2-parse <file-keys> [ <file-keys> ...] <file-parse>"
+}
+
+# }}}
+
+
+###########################
+##   INIT {{{
+
+[[ $# -lt 2 ]] && shsite2-parse-help && exit 1
+
+file_parse=`mktemp -t shsite2.XXXXXX`
+file_keys=`mktemp -t shsite2.XXXXXX`
+file_block_output=`mktemp -t shsite2.XXXXXX`
+file_tmp=`mktemp -t shsite2.XXXXXX`
+
+trap "rm -f $file_parse $file_keys $file_block_output $file_tmp" EXIT
+
+# previous $file_parse is the next $file_keys
+# so first $file_parse is $1
+cp $1 $file_parse
+
+# }}}
+
+while [[ $# -ge 2 ]]
+do
+	cp $file_parse $file_keys # previous parse is new keys
+	cp $2 $file_parse	# next arg is new parse
+
+	block_count=1;advance=0
+	while [[ $block_count -le $(grep -o '%{' $file_parse | wc -l) ]]
+	do
+
+		###########################
+		##   Find next block {{{
+
+
+		block=`./shsite2-blocks $file_parse $block_count`
+
+
+		# }}}
+
+		###########################
+		##   Replace block
+
+		## What is this block?
+		btype=${block:0:1}; block=${block:1};
+		case $btype in
+
+			# if it is a command (!), execute and replace by output {{{
+			"!") 
+				command=shsite2-${block%%:*}
+				data=${block#*:}
+				# if command exists run it and replace with output
+				if [ $(command -v $command) ]; then
+					$command "$data" > $file_block_output
+				# if not, just output the data
+				else
+					echo -n "($command): $data" > $file_block_output
+				fi
+			;; # }}}
+
+			# if it is a file (@), replace by file-contents {{{
+			"@") 
+				echo "file:$block" > $file_block_output
+				[[ -e "$block" ]] && (cp $block $file_block_output) 
+			;; # }}}
+
+			# all other cases: it is a key, replace by its data {{{
+			# if no key found in $file_keys, leave the block as is
+			* ) 
+				block=$btype$block
+				key=$(echo $block) # No multiline variable definition for now
+				if [ $(grep -c "^- $key:$" $file_keys) -gt 0 ]; then
+					sed -n "/^- $key:$/,/^- .*:$/p" $file_keys | sed '/^- .*:$/d' > $file_block_output
+				else
+					echo -n "%{$block}%" > $file_block_output
+					advance=1
+				fi
+			;; # }}}
+
+		esac
+
+		## Put the the output where the block was
+
+		./shsite2-block-put $file_block_output $file_parse $block_count > $file_tmp
+		cp $file_tmp $file_parse
+
+		((block_count+=advance))
+		advance=0
+
+	done
+
+	shift
+done
+
+cat $file_parse
