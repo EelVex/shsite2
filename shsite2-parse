@@ -2,8 +2,8 @@
 
 ###########################
 #
-#    Parse file $<n> using keys from file $<n-1>
-#	order is left to right
+#    Use keys of $<n> to parse $<n+1>, start from n=1
+#
 #
 ###########################
 
