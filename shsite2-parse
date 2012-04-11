@@ -3,6 +3,7 @@
 ###########################
 #
 #    Use keys of $<n> to parse $<n+1>, start from n=1
+#    If only one argument given, get second file from stdin (waits for EOF)
 #
 #
 ###########################
@@ -16,34 +17,14 @@ shsite2-shell() {
 
 shsite2-parse-help() {
 	echo "shsite2-parse <file-keys> [ <file-keys> ...] <file-parse>"
+	echo "shsite2-parse <file-keys> < <file-parse>"
 }
 
 # }}}
 
-
-###########################
-##   INIT {{{
-
-[[ $# -lt 2 ]] && shsite2-parse-help && exit 1
-
-file_parse=`mktemp -t shsite2.XXXXXX`
-file_keys=`mktemp -t shsite2.XXXXXX`
-file_block_output=`mktemp -t shsite2.XXXXXX`
-file_tmp=`mktemp -t shsite2.XXXXXX`
-
-trap "rm -f $file_parse $file_keys $file_block_output $file_tmp" EXIT
-
-# previous $file_parse is the next $file_keys
-# so first $file_parse is $1
-cp $1 $file_parse
-
-# }}}
-
-while [[ $# -ge 2 ]]
-do
-	cp $file_parse $file_keys # previous parse is new keys
-	cp $2 $file_parse	# next arg is new parse
-
+shsite2-parse-do() { # {{{
+	file_keys=$1
+	file_parse=$2
 	block_count=1;advance=0
 	while [[ $block_count -le $(grep -o '%{' $file_parse | wc -l) ]]
 	do
@@ -107,8 +88,50 @@ do
 		advance=0
 
 	done
+}
+
+# }}}
+
+###########################
+##   INIT {{{
+
+[[ $# -lt 1 ]] && shsite2-parse-help && exit 1
+
+file_parse=`mktemp -t shsite2.XXXXXX`
+file_keys=`mktemp -t shsite2.XXXXXX`
+file_block_output=`mktemp -t shsite2.XXXXXX`
+file_tmp=`mktemp -t shsite2.XXXXXX`
+
+trap "rm -f $file_parse $file_keys $file_block_output $file_tmp" EXIT
+
+# previous $file_parse is the next $file_keys
+# so first $file_parse is $1
+cp $1 $file_parse
+
+# }}}
+
+## If got just one argument: {{{
+
+[[ $# -eq 1 ]] && {
+	cat <&0 > $file_parse;
+	shsite2-parse-do "$1" "$file_parse";
+}
+
+# }}}
+
+## If got more than two arguments {{{
+
+while [[ $# -ge 2 ]]
+do
+	cp $file_parse $file_keys # previous parse is new keys
+	cp $2 $file_parse	# next arg is new parse
+
+	shsite2-parse-do "$file_keys" "$file_parse"
 
 	shift
 done
+
+# }}}
+
 
 cat $file_parse
