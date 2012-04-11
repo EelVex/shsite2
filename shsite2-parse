@@ -52,7 +52,7 @@ do
 		##   Find next block {{{
 
 
-		block=`./shsite2-blocks $file_parse $block_count`
+		block=`shsite2-blocks $file_parse $block_count`
 
 
 		# }}}
@@ -100,7 +100,7 @@ do
 
 		## Put the the output where the block was
 
-		./shsite2-block-put $file_block_output $file_parse $block_count > $file_tmp
+		shsite2-block-put $file_block_output $file_parse $block_count > $file_tmp
 		cp $file_tmp $file_parse
 
 		((block_count+=advance))
