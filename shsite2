@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# Wrapper script
+
+SHS2_PATH=/usr/local/etc/shsite2
+
+# Find and read a config file
+for config_file in .shsite2.config $HOME/.shsite2.config $HOME/.shsite2/config /usr/local/etc/shsite2.config
+do
+	[[ -e $config_file ]] && source $config_file && break
+done
+
+cmd=$1
+shift
+
+case $cmd in
+	"get-key") ;&
+	"blocks") ;&
+	"block-put") ;&
+	"parse") 
+		$SHS2_PATH/shsite2-$cmd "$1" "$2" "$3"
+		;;
+	*)
+		echo "Commands: get-key | blocks | block-put | parse"
+		echo "For info on each command, enter:"
+		echo "shsite2 <command>"
+		;;
+esac
