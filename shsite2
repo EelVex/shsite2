@@ -14,11 +14,12 @@ cmd=$1
 shift
 
 case $cmd in
+	"shell") eval "$1" ;;
 	"get-key") ;&
 	"blocks") ;&
 	"block-put") ;&
 	"parse") 
-		$SHS2_PATH/shsite2-$cmd "$1" "$2" "$3"
+		$SHS2_PATH/shsite2-$cmd "$@"
 		;;
 	*)
 		echo "Commands: get-key | blocks | block-put | parse | make | publish | info"

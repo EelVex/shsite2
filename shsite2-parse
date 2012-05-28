@@ -16,8 +16,8 @@ shsite2-shell() {
 }
 
 shsite2-parse-help() {
-	echo "shsite2-parse <file-keys> [ <file-keys> ...] <file-parse>"
-	echo "shsite2-parse <file-keys> < <file-parse>"
+	echo "parse <file-keys> [ <file-keys> ...] <file-parse>"
+	echo "parse <file-keys> < <file-parse>"
 }
 
 # }}}
@@ -33,7 +33,7 @@ shsite2-parse-do() { # {{{
 		##   Find next block {{{
 
 
-		block=`shsite2-blocks $block_count $file_parse`
+		block=`shsite2 blocks $block_count $file_parse`
 
 
 		# }}}
@@ -47,7 +47,7 @@ shsite2-parse-do() { # {{{
 
 			# if it is a command (!), execute and replace by output {{{
 			"!") 
-				command=shsite2-${block%%:*}
+				command=shsite2 ${block%%:*}
 				data=${block#*:}
 				# if command exists run it and replace with output
 				if [ $(command -v $command) ]; then
@@ -69,7 +69,7 @@ shsite2-parse-do() { # {{{
 			* ) 
 				block=$btype$block
 				key=$(echo $block) # No multiline variable definition for now
-				shsite2-get-key $file_keys $key > $file_block_output || 
+				shsite2 get-key $key $file_keys > $file_block_output || 
 				# if key not found, let the block be 
 				{
 					echo -n "%{$block}%" > $file_block_output;
@@ -81,7 +81,7 @@ shsite2-parse-do() { # {{{
 
 		## Put the the output where the block was
 
-		shsite2-block-put $file_block_output $block_count $file_parse > $file_tmp
+		shsite2 block-put $file_block_output $block_count $file_parse > $file_tmp
 		cp $file_tmp $file_parse
 
 		((block_count+=advance))
