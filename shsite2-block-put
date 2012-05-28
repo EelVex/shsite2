@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-count=$3
-file=$2
 block=$1
+count=$2
+file=$3
 awk "BEGIN { RS=\"}%\"; FS=\"%{\" } { if (NR<=$count) {printf \"%s}%\",\$0}}" $file | rev | tac | \
     awk "BEGIN { RS=\"%}\"; FS=\"{%\"; c=0; v=0 } { 
 	    for (i=1;i<=NF;i++) {
