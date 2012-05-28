@@ -21,7 +21,7 @@ case $cmd in
 		$SHS2_PATH/shsite2-$cmd "$1" "$2" "$3"
 		;;
 	*)
-		echo "Commands: get-key | blocks | block-put | parse"
+		echo "Commands: get-key | blocks | block-put | parse | make | publish | info"
 		echo "For info on each command, enter:"
 		echo "shsite2 <command>"
 		;;
