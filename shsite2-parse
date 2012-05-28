@@ -11,10 +11,6 @@
 ###########################
 ##  simple helper functions {{{
 
-shsite2-shell() {
-	eval "$1"
-}
-
 shsite2-parse-help() {
 	echo "parse <file-keys> [ <file-keys> ...] <file-parse>"
 	echo "parse <file-keys> < <file-parse>"
@@ -47,11 +43,11 @@ shsite2-parse-do() { # {{{
 
 			# if it is a command (!), execute and replace by output {{{
 			"!") 
-				command=shsite2 ${block%%:*}
+				command=${block%%:*}
 				data=${block#*:}
 				# if command exists run it and replace with output
-				if [ $(command -v $command) ]; then
-					$command "$data" > $file_block_output
+				if [[ $(shsite2 parse-commands -v $command) = "0" ]]; then
+					shsite2 parse-commands $command "$data" > $file_block_output
 				# if not, just output the data
 				else
 					echo -n "($command): $data" > $file_block_output

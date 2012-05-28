@@ -2,7 +2,6 @@
 
 # Wrapper script
 
-SHS2_PATH=/usr/local/etc/shsite2
 
 # Find and read a config file
 for config_file in .shsite2.config $HOME/.shsite2.config $HOME/.shsite2/config /usr/local/etc/shsite2.config
@@ -10,16 +9,29 @@ do
 	[[ -e $config_file ]] && source $config_file && break
 done
 
+[[ -z "$SHS2_PATH" ]] && SHS2_PATH=/usr/local/etc/shsite2
+[[ -z "$SHS2_PARSE_COMMANDS_PATH" ]] && SHS2_PARSE_COMMANDS_PATH=$SHS2_PATH/parse_commands
+[[ -z "$USER_PARSE_COMMANDS_PATH" ]] && USER_PARSE_COMMANDS_PATH=parse_commands
+
 cmd=$1
 shift
 
 case $cmd in
-	"shell") eval "$1" ;;
 	"get-key") ;&
 	"blocks") ;&
 	"block-put") ;&
 	"parse") 
 		$SHS2_PATH/shsite2-$cmd "$@"
+		;;
+	"parse-commands")
+		if [[ "$1" = "-v" ]]; then
+			([[ -x $SHS2_PARSE_COMMANDS_PATH/$2 ]] || [[ -x $USER_PARSE_COMMANDS_PATH/$2 ]]) && echo "0"
+		else
+			parse_cmd=$1; shift
+			for path in $SHS2_PARSE_COMMANDS_PATH $USER_PARSE_COMMANDS_PATH; do
+				[[ -x $path/$parse_cmd ]] && $path/$parse_cmd "$@"
+			done
+		fi
 		;;
 	*)
 		echo "Commands: get-key | blocks | block-put | parse | make | publish | info"
