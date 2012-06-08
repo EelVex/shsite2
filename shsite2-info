@@ -27,6 +27,7 @@ case $info in
 	"path") 
 		path=$(shsite2 get-key path $file | shsite2 parse $file)
 		[[ -z "$path" ]] && path=$(dirname $file)
+		[[ "$path" = "." ]] && path=""
 		echo "$path"
 		;;
 	"fullpathname")
