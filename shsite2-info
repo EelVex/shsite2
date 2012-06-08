@@ -31,7 +31,9 @@ case $info in
 		echo "$path"
 		;;
 	"fullpathname")
-		echo $(shsite2 info path $file)/$(shsite2 info name $file)
+		path=$(shsite2 info path $file)
+		name=$(shsite2 info name $file)
+		if [[ -z "$path" ]]; then echo "$name"; else echo "$path/$name"; fi
 		;;
 	"depends") ;;
 	*)
