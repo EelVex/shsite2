@@ -35,7 +35,11 @@ case $info in
 		name=$(shsite2 info name $file)
 		if [[ -z "$path" ]]; then echo "$name"; else echo "$path/$name"; fi
 		;;
-	"depends") ;;
+	"depends") 
+		depends=($(shsite2 get-key depends $file | shsite2 parse $file))
+		depends+=($(grep -o "%{@[^}]*}%" $file | sed 's/^%{@//;s/}%$//'))
+		echo $(for i in "${depends[@]}"; do echo $i;done | sort | uniq | xargs)
+		;;
 	*)
 		echo "<info> should be one of: path, name, fullpathname, title, depends."
 		rc=2
