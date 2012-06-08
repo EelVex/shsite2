@@ -34,6 +34,23 @@ case $cmd in
 			done
 		fi
 		;;
+	"make")
+		if [[ -e "Makefile" ]]; then
+			make
+		else
+			echo "There is no Makefile here."
+			echo -e "\nIf this is not the root directory of your site, then go to the root\ndirectory and try 'make' there."
+			echo -e "\nIf this is the root directory of your site, then you should install\na Makefile here."
+			echo -e "\nShould I install the default Makefile (recommended)?"
+			read -p "(Y/n)?" -n 1
+			if [[ $REPLY = "Y" ]]; then
+				cp $SHS2_PATH/Makefile.sample Makefile
+				[[ ! -e makefile.inc ]] && cp $SHS2_PATH/makefile.inc.sample makefile.inc
+				echo
+				echo "Makefile installed. Now edit makefile.inc to your needs"
+			fi
+		fi
+		;;
 	*)
 		echo "Commands: get-key | blocks | block-put | parse | make | publish | info"
 		echo "For info on each command, enter:"

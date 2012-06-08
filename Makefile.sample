@@ -1,0 +1,24 @@
+-include makefile.inc
+
+.PHONY:all
+
+all: $(SITES)
+
+$(SITES): % : %.mk
+
+.SECONDEXPANSION:
+%.mk : $$($$*_sources) Makefile  makefile.inc
+	@echo "Building $@ for: $($*_sources)"
+	@rm -f $@
+	@for source in $($*_sources); do \
+		target=$*/$$(shsite2 info fullpathname $$source); \
+		depends=$$(shsite2 info depends $$source); \
+		echo -e "\
+$$target: $$source $$depends\n\t\
+\$$(call $*_rule,\$$<,\$$@,\$$^)\
+	\n$*: $$target\n" >> $@; \
+	done
+
+-include $(SITES:%=%.mk)
+	
+#shsite2 parse \$$< $($*_template) > \$$@ \
