@@ -7,7 +7,7 @@ all: $(SITES)
 $(SITES): % : %.mk
 
 .SECONDEXPANSION:
-%.mk : $$($$*_sources) Makefile  makefile.inc
+%.mk : Makefile  makefile.inc
 	@echo "Building $@ for: $($*_sources)"
 	@rm -f $@
 	@for source in $($*_sources); do \
