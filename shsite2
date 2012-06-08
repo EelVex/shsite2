@@ -17,6 +17,7 @@ cmd=$1
 shift
 
 case $cmd in
+	"info") ;&
 	"get-key") ;&
 	"blocks") ;&
 	"block-put") ;&

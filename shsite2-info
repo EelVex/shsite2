@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+info=$1
+file=$2
+
+# info is one of:
+# name title path depends fullpathname
+
+[[ -z "$info" ]] || [[ -z "$file" ]] && echo "Usage: info <info> <file>" && exit 2
+[[ ! -e "$file" ]] && echo "file '$file' not found" && exit 3
+
+case $info in
+	"name") 
+		name=$(shsite2 get-key name $file | shsite2 parse $file)
+		[[ -z "$name" ]] && name=$(shsite2 get-key filename $file | shsite2 parse $file)
+		[[ -z "$name" ]] && { 
+			name=${file##*/}
+			name=${name/.sl/.html}
+		}
+		echo "$name"
+		;;
+	"title") 
+		title=$(shsite2 get-key title $file | shsite2 parse $file)
+		[[ -z "$title" ]] && title=${file%%.*}
+		echo "$title"
+		;;
+	"path") 
+		path=$(shsite2 get-key path $file | shsite2 parse $file)
+		[[ -z "$path" ]] && path=$(dirname $file)
+		echo "$path"
+		;;
+	"fullpathname")
+		echo $(shsite2 info path $file)/$(shsite2 info name $file)
+		;;
+	"depends") ;;
+	*)
+		echo "<info> should be one of: path, name, fullpathname, title, depends."
+		rc=2
+		;;
+esac
+
+
+exit $rc
