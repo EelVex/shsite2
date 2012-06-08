@@ -4,6 +4,8 @@ SITES=default
 
 # By default, include all .sl and .html files
 default_sources := $(shell echo `find . -iname '*.sl' -o -iname '*.html' | cut -c 3- | grep -v default/`)
+# Also include all files under images/
+default_sources += images/*
 
 # Define the make rule for the site:
 define default_rule =
