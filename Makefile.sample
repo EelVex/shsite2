@@ -20,5 +20,3 @@ $$target: $$source $($*_depends) $$depends\n\t\
 	done
 
 -include $(SITES:%=%.mk)
-	
-#shsite2 parse \$$< $($*_template) > \$$@ \
