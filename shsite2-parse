@@ -48,9 +48,10 @@ shsite2-parse-do() { # {{{
 				# if command exists run it and replace with output
 				if [[ $(shsite2 parse-commands -v $command) = "0" ]]; then
 					shsite2 parse-commands $command "$data" > $file_block_output
-				# if not, just output the data
+				# if not, just output the data and warn (stderr)
 				else
 					echo -n "($command): $data" > $file_block_output
+					echo "parse-command \"$command\" not found" >&2
 				fi
 			;; # }}}
 
