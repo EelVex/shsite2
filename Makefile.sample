@@ -14,7 +14,7 @@ $(SITES): % : %.mk
 		target=$*/$$(shsite2 info fullpathname $$source); \
 		depends=$$(shsite2 info depends $$source); \
 		echo -e "\
-$$target: $$source $$depends\n\t\
+$$target: $$source $($*_depends) $$depends\n\t\
 \$$(call $*_rule,\$$<,\$$@,\$$^)\
 	\n$*: $$target\n" >> $@; \
 	done
