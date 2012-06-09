@@ -1,0 +1,41 @@
+\documentclass{memoir}
+
+\title{shsite2 manual}
+\author{eelvex}
+\date{\today}
+
+\begin{document}
+\begin{titlingpage}
+\maketitle
+\end{titlingpage}
+\tableofcontents
+
+\chapter{Commands} % {{{
+
+\section{\emph{make}}
+make [site]
+
+Invoke gnu-make command after some basic checks.
+
+A default Makefile is provided that is supposed to build a site from your sources.
+\section{\emph{publish}}
+publish [site]
+
+Publish your site through rsync,git,(s)ftp or other user-specified method.
+\section{\emph{info}}
+info <path | name | fullpathname | title | depends> <file>
+
+Get relevant info from file.
+\section{get-key}
+\section{blocks}
+\section{block-put}
+\section{parse}
+
+% }}} commands
+
+\chapter{Usage}
+\chapter{Examples}
+
+
+
+\end{document}
