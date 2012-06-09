@@ -66,7 +66,7 @@ shsite2-parse-do() { # {{{
 			* ) 
 				block=$btype$block
 				key=$(echo $block) # No multiline variable definition for now
-				shsite2 get-key $key $file_keys > $file_block_output || 
+				shsite2 get-key $file_keys $key > $file_block_output || 
 				# if key not found, let the block be 
 				{
 					echo -n "%{$block}%" > $file_block_output;
