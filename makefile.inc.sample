@@ -2,13 +2,22 @@
 # SITES=mydomain.com myblog.com mygit.github.com
 SITES=default
 
-# By default, include all .sl and .html files
-default_sources := $(shell echo `find . -iname '*.sl' -o -iname '*.html' | cut -c 3- | grep -v default/`)
+# _sources are files to be parsed.
+# By default, include all .sl
+default_sources := $(shell echo `find . -iname '*.sl' | cut -c 3- | grep -v default/`)
+# _files are files to be included verbatim
+# Be default, include all .html and .png files
+default_files := $(shell echo `find . -iname '*.html' -o -iname '*.png' | cut -c 3- | grep -v default/`)
 # Also include all files under images/
-default_sources += images/*
+default_files += images/*
+
+# If there are common dependencies to the sources (eg. the template file), list
+# them here
+default_depends := template.html
 
 # Define the make rule for the site:
 define default_rule =
+	@echo "Building ${2}"
 	@mkdir -p $$(dirname ${2})
 	@shsite2 parse ${1} template.html | shsite2 parse config.sl > ${2}
 endef

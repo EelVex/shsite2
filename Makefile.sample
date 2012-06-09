@@ -18,5 +18,7 @@ $$target: $$source $($*_depends) $$depends\n\t\
 \$$(call $*_rule,\$$<,\$$@,\$$^)\
 	\n$*: $$target\n" >> $@; \
 	done
+	@echo -e "\n$($*_files):\n\tcp \$$< $*/\$$<" >> $@
+	@echo -e "$*: $($*_files)" >> $@
 
 -include $(SITES:%=%.mk)
