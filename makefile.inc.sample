@@ -9,7 +9,7 @@ default_sources := $(shell echo `find . -iname '*.sl' | cut -c 3- | grep -v defa
 # Be default, include all .html and .png files
 default_files := $(shell echo `find . -iname '*.html' -o -iname '*.png' | cut -c 3- | grep -v default/`)
 # Also include all files under images/
-default_files += images/*
+default_files += $(wildcard images/*)
 
 # If there are common dependencies to the sources (eg. the template file), list
 # them here
