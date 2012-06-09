@@ -1,0 +1,50 @@
+# shsite2 completion
+
+_shsite2()
+{
+	COMPREPLY=()
+	local cur prev opts base
+	cur="${COMP_WORDS[COMP_CWORD]}"
+	prev="${COMP_WORDS[COMP_CWORD-1]}"
+	opts="make publish info get-key parse"
+
+	case $prev in
+		info)
+			COMPREPLY=($(compgen -W 'fullpathname name path title depends' -- "$cur"))
+			return 0
+			;;
+		publish)
+			# list of publish targets
+			return 0
+			;;
+		make)
+			# Something like:
+			# make -rpn | sed -n -e '/^$/ { n ; /^[^ ]*:/p }'
+			return 0
+			;;
+	esac
+
+	if [[ $COMP_CWORD -eq 1 ]]; then
+		COMPREPLY=($(compgen -W "$opts" -- "$cur"))
+	else
+		case ${COMP_WORDS[1]} in
+			make) ;&
+			publish) 
+				return 0 
+				;;
+			get-key)
+				if [[ $COMP_CWORD -eq 2 ]]; then
+					COMPREPLY=($(compgen -f "$cur"))
+				elif [[ $COMP_CWORD -eq 3 ]]; then
+					local keys=$(sed -ne 's/^- \(.*\):$/\1/p' $prev)
+					COMPREPLY=($(compgen -W "$keys" -- "$cur"))
+				fi
+				return 0
+				;;
+			*) COMPREPLY=($(compgen -f "$cur")) ;;
+		esac
+	fi
+
+	return 0
+} &&
+complete -F _shsite2 shsite2
