@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#
+# make a table using latex's table markup
+# meant for simple tables
+
+echo "<table>"
+echo -n "<tr class='first-row'><td class='first-col'>"
+echo "$@" | sed 's#\\\\#</td></tr>\n<tr><td class="first-col">#g;s#\&#</td><td>#g'
+echo -n "</td></tr>"
+echo "</table>"
