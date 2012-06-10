@@ -36,7 +36,7 @@ case $cmd in
 		;;
 	"make")
 		if [[ -e "Makefile" ]]; then
-			make
+			make "$@"
 		else
 			echo "There is no Makefile here."
 			echo -e "\nIf this is not the root directory of your site, then go to the root\ndirectory and try 'make' there."
