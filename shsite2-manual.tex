@@ -4,6 +4,8 @@
 \author{eelvex}
 \date{\today}
 
+\newcommand{\var}[1]{\%\{#1\}\%}
+
 \makeglossary
 
 \begin{document}
@@ -11,6 +13,26 @@
 \maketitle
 \end{titlingpage}
 \tableofcontents
+
+\chapter{How it works} % {{{
+
+Define variable: ``- key:''
+
+Variables: \var{name}
+
+Commands: \var{!command}
+
+Includes:  \var{@file}
+
+Any nest level:
+
+\var{name-\var{!com: args}-\var{@\var{!echo "file"}} }
+will first run command ``com'' with arguments ``args'', then will run ``echo "file"'', will include ``file''
+which will make the name of the variable: ``name-xxx-xxx''
+
+
+
+% }}}
 
 \chapter{Commands} % {{{
 
