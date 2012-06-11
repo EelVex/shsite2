@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# output an image tag
+
+options=($(echo "$@"))
+src=${options[0]}
+title=${options[1]}
+alt=${options[2]}
+
+echo "<img src='$src' title='$title' alt='$alt' />"
