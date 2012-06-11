@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#
+# Code highlighting and formating
+# First input line contain formating options:
+# 0:language
+
+options=($(echo "$@" | head -1))
+lang=${options[0]}
+
+echo "<pre>"
+echo "$@" | sed -n '2,$p'
+echo "</pre>"
