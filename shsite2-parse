@@ -78,7 +78,8 @@ shsite2-parse-do() { # {{{
 						advance=1;
 					else
 						(
-						eval "set $args"
+						eval "set $args" 2> /dev/null ||  		# If this fails, 
+							eval "set $(printf "%q" "$args")" 	# then escape the string and set it as one argument
 						eval "$body" > $file_block_output
 						)
 					fi
