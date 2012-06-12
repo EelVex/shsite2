@@ -61,17 +61,36 @@ shsite2-parse-do() { # {{{
 				[[ -e "$block" ]] && (cp $block $file_block_output) 
 			;; # }}}
 
-			# all other cases: it is a key, replace by its data {{{
+			# all other cases: it is a key or function, replace by its value/output {{{
 			# if no key found in $file_keys, leave the block as is
 			* ) 
 				block=$btype$block
 				key=$(echo $block) # No multiline variable definition for now
-				shsite2 get-key $file_keys $key > $file_block_output || 
-				# if key not found, let the block be 
-				{
-					echo -n "%{$block}%" > $file_block_output;
-					advance=1;
-				}
+				if [[ $(echo "$key" | grep -c '^[^:]*: ') -gt 0 ]]; then
+					## If the variable is of the form "var: ...", treat the part after ": "
+					## as arguments to the function "var"
+					fun="${key%%: *}"
+					args=${key#*: }
+					body=$(shsite2 get-key $file_keys $fun)
+					if [[ -z "$body" ]]; then
+					# if key not found, let the block be 
+						echo -n "%{$block}%" > $file_block_output;
+						advance=1;
+					else
+						(
+						eval "set $args"
+						eval "$body" > $file_block_output
+						)
+					fi
+				else
+					## else, just replace the variable with its value
+					shsite2 get-key $file_keys $key > $file_block_output || 
+					# if key not found, let the block be 
+					{
+						echo -n "%{$block}%" > $file_block_output;
+						advance=1;
+					}
+				fi
 			;; # }}}
 
 		esac
