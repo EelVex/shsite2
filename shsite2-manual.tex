@@ -16,21 +16,41 @@
 
 \chapter{How it works} % {{{
 
-Define variable or function: ``- key:''
+\section{variables, commands and functions} % {{{
 
-Variables: \var{name}
+	Define variable or function: ``- key:''
 
-Functions: \var{name: args}
+	Variables: \var{name}
 
-Commands: \var{!command}
+	Functions: \var{name: args}
 
-Includes:  \var{@file}
+	Commands: \var{!command}
 
-Any nest level:
+	Includes:  \var{@file}
 
-\var{name-\var{!com: args}-\var{@\var{!echo "file"}} }
-will first run command ``com'' with arguments ``args'', then will run ``echo "file"'', will include ``file''
-which will make the name of the variable: ``name-xxx-xxx''
+	Any nest level:
+
+	\var{name-\var{!com: args}-\var{@\var{!echo "file"}} }
+	will first run command ``com'' with arguments ``args'', then will run ``echo "file"'', will include ``file''
+	which will make the name of the variable: ``name-xxx-xxx''
+
+% }}} variables, commands and functions
+
+\section{Makefile} % {{{
+
+Dynamic template with default, example
+\tabson
+\begin{verbatim}
+define eelvex.net_rule =
+	@echo "Building ${2}"
+	@mkdir -p $$(dirname ${2})
+	@template=$$(shsite2 get-key ${1} template); \
+		shsite2 parse preconfig.slc ${1} $${template:-template.html} | shsite2 parse postconfig.slc > ${2}
+endef
+\end{verbatim}
+
+
+% }}} makefile
 
 
 
