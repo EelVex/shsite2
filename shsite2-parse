@@ -58,7 +58,9 @@ shsite2-parse-do() { # {{{
 			# if it is a file (@), replace by file-contents {{{
 			"@") 
 				echo "file:$block" > $file_block_output
-				[[ -e "$block" ]] && (cp $block $file_block_output) 
+				( [[ -e "$block" ]] && (cp $block $file_block_output) ) || # search in relative-to-current directory first
+					( [[ -e "$USER_INC_PATH/$block" ]] && (cp $USER_INC_PATH/$block $file_block_output) ) || # then in user's includes
+					( [[ -e "$SHS2_LIB_PATH/$block" ]] && (cp $SHS2_LIB_PATH/$block $file_block_output) ) # then in shs2 library 
 			;; # }}}
 
 			# all other cases: it is a key or function, replace by its value/output {{{
