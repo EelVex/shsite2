@@ -4,7 +4,7 @@
 \author{eelvex}
 \date{\today}
 
-\newcommand{\var}[1]{\%\{#1\}\%}
+\newcommand{\var}[1]{\texttt{\%\{#1\}\%}}
 
 \makeglossary
 
@@ -16,7 +16,7 @@
 
 \chapter{How it works} % {{{
 
-\section{variables, commands and functions} % {{{
+\section{variables, parse-commands and functions} % {{{
 
 	Define variable or function: ``- key:''
 
@@ -24,7 +24,7 @@
 
 	Functions: \var{name: args}
 
-	Commands: \var{!command}
+	Parse-Commands: \var{!command}
 
 	Includes:  \var{@file}
 
@@ -35,6 +35,7 @@
 	which will make the name of the variable: ``name-xxx-xxx''
 
 % }}} variables, commands and functions
+
 
 \section{Makefile} % {{{
 
@@ -51,7 +52,6 @@ endef
 
 
 % }}} makefile
-
 
 
 % }}}
@@ -95,6 +95,19 @@ endef
 	\section{code}
 
 % }}} parse-commands
+
+\chapter{standard library functions} % {{{
+\var{@stdfunctions}
+\section{map}
+\var{map: '\var{func}' arg1 arg2 'arg3-a arg3-b' \ldots}
+
+is the same as:\\
+\var{func: arg1}\\
+\var{func: arg2}\\
+\var{func: arg3-a arg3-b}\\
+\ldots
+
+% }}}
 
 \chapter{Usage}
 \chapter{Examples}
