@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# Return a table of contents, using <h?> tags of the input
+
+# TODO: Use something better for this job, like lxml
+#
+# To enable the anchors of this command, put in your page something like the
+# following script, after loading jQuery.
+#
+# <script>
+# $(document).ready(function() {
+#	$("h1, h2, h3, h4").each(function(i) {
+#		$(this).attr("id", "toc" + i);
+#	});
+# });
+# </script>
+
+hlist=$(echo "$1" | grep -o "<h[0-9][^>]*>.*</h[0-9]>")
+
+i=0
+for hl in $hlist; do
+	class=${hl:1:2}
+	title=$(echo $hl | sed 's#<[^>]*>##g')
+	echo "<a href='#toc$i' class='$class'>$title</a>"
+	((i++))
+done
