@@ -1,0 +1,3 @@
+- map:
+body=$1; shift
+for i in $(seq $#); do ( eval "set ${!i}"; eval "$body"); done
