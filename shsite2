@@ -9,9 +9,9 @@ do
 	[[ -e $config_file ]] && source $config_file && break
 done
 
-[[ -z "$SHS2_PATH" ]] && SHS2_PATH=/usr/local/etc/shsite2
-[[ -z "$SHS2_PARSE_COMMANDS_PATH" ]] && SHS2_PARSE_COMMANDS_PATH=$SHS2_PATH/parse_commands
-[[ -z "$USER_PARSE_COMMANDS_PATH" ]] && USER_PARSE_COMMANDS_PATH=parse_commands
+: ${SHS2_PATH:=/usr/local/etc/shsite2}
+: ${SHS2_PARSE_COMMANDS_PATH:=$SHS2_PATH/parse_commands}
+: ${USER_PARSE_COMMANDS_PATH:=parse_commands}
 
 cmd=$1
 shift
