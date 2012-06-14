@@ -85,6 +85,11 @@ shsite2-parse-do() { # {{{
 						echo -n "%{$block}%" > $file_block_output;
 						advance=1;
 					else
+						# Successful functions also may eliminate some %{...}%s so we have to reset the
+						# counter, to just before the function call. Do this by counting closing }%s up
+						# to this point.
+						nbl=$(sed -n "1,/%{$fun: /p" $file_parse | sed "\$s/%{$fun: .*//g" | grep -o '}%' | wc -l)
+						advance=$((nbl-block_count+1))
 						(
 						eval "set $args" 2> /dev/null ||  		# If this fails, 
 							eval "set $(printf "%q" "$args")" 	# then escape the string and set it as one argument
