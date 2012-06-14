@@ -47,6 +47,12 @@ shsite2-parse-do() { # {{{
 				data=${block#*:}
 				# if command exists run it and replace with output
 				if [[ $(shsite2 parse-commands -v $command) = "0" ]]; then
+					# Successful commands may eliminate some %{...}%s so we have to reset the
+					# counter, to just before the command. Do this by counting closing }%s up
+					# to this point.
+					nbl=$(sed -n "1,/%{!$command/p" $file_parse | sed "\$s/%{!$command.*//g" | grep -o '}%' | wc -l)
+					advance=$((nbl-block_count+1))
+					# Run command
 					shsite2 parse-commands $command "$data" > $file_block_output
 				# if not, just output the data and warn (stderr)
 				else
