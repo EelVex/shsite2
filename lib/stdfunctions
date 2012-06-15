@@ -1,3 +1,5 @@
 - map:
 body=$1; shift
 for i in $(seq $#); do ( eval "set ${!i}"; eval "$body"); done
+- if:
+(eval "[[ $1 ]]") && echo "$2" || echo "$3"
