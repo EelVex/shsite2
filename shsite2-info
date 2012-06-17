@@ -21,7 +21,7 @@ case $info in
 		;;
 	"title") 
 		title=$(shsite2 get-key $file title | shsite2 parse $file)
-		[[ -z "$title" ]] && title=${file%%.*}
+		[[ -z "$title" ]] && { title=${file##*/}; title=${title%.*}; }
 		echo "$title"
 		;;
 	"path") 
