@@ -10,8 +10,10 @@ $(SITES): % : %.mk
 %.mk : Makefile  makefile.inc
 	@$(eval $*_target_dir ?= $*)
 	@$(eval $*_sources:=$(filter-out $($*_target_dir)/%,$($*_sources)))
-	@echo "Building $@ for: $($*_sources)"
 	@rm -f $@
+	@echo "Building $@ for: $($*_sources)"
+	@echo "$*_indexes ?= \$$($*_sources)" >> $@
+	@echo "$*_indexes :=\$$(filter-out $($*_target_dir)/%,\$$($*_indexes))" >> $@
 	@for source in $($*_sources); do \
 		target=$($*_target_dir)/$$(shsite2 info fullpathname $$source); \
 		depends=$$(shsite2 info depends $$source); \
@@ -24,5 +26,9 @@ $$target: $$source $($*_depends) $$depends\n\t\
 	@echo -e "$*_files := \$$(addprefix $($*_target_dir)/,\$$($*_files))\n" >> $@
 	@echo -e "$*: \$$($*_files)\n" >> $@
 	@echo -e "\$$($*_files): $($*_target_dir)/% : %\n\t@mkdir -p \`dirname \$$@\`\n\t@cp \$$< \$$@\n" >> $@
+	@echo -e "ifdef $*_indexes\n\
+$*: $*_index.db\n\
+$*_index.db: \$$($*_indexes)\n\t@shsite2 updatedb \$$@ \$$^\n\
+endif\n" >> $@
 
 -include $(SITES:%=%.mk)
