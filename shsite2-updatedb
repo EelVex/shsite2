@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+db=$1
+shift
+
+[[ -z "$db" ]] && { echo "No db file given" >&2; exit 1; }
+(command -v sqlite3 > /dev/null) || { echo "No sqlite3" >&2; exit 0; }
+
+
+[[ ! -e "$db" ]] && (
+	# Create database tables
+	echo "Creating database $db" >&2
+)
+
+# No way of knowing about deleted files, so empty tables first :-/
+
+# EMPTY posts
+# EMPTY tags
+# EMPTY tags_posts
+
+for i in $@; do
+	# posts table: insert
+	# post_id; source; output_path; output_name; title; tags; update; created
+	tags=$(shsite2 get-key $i tags)
+	for tag in $tags; do
+		# tags table: insert if not exists
+		# tag_id; tag
+		# tags_posts table: insert
+		# tp_id; tag_id; post_id
+		sleep 0
+	done
+done

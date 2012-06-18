@@ -19,6 +19,7 @@ cmd=$1
 shift
 
 case $cmd in
+	"updatedb") ;&
 	"info") ;&
 	"get-key") ;&
 	"blocks") ;&
@@ -57,7 +58,7 @@ case $cmd in
 		fi
 		;;
 	*)
-		echo "Commands: get-key | blocks | block-put | parse | make | publish | info"
+		echo "Commands: get-key | blocks | block-put | parse | [re]make | publish | info | updatedb"
 		echo "For info on each command, enter:"
 		echo "shsite2 <command>"
 		;;
