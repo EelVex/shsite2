@@ -38,6 +38,8 @@ case $cmd in
 		;;
 	"make")
 		if [[ -e "Makefile" ]]; then
+			# Force making *.mk (because there might be new files or sources)
+			touch Makefile
 			make "$@"
 		else
 			echo "There is no Makefile here."
