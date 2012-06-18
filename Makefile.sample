@@ -8,9 +8,10 @@ $(SITES): % : %.mk
 
 .SECONDEXPANSION:
 %.mk : Makefile  makefile.inc
+	@$(eval $*_target_dir ?= $*)
+	@$(eval $*_sources:=$(filter-out $($*_target_dir)/%,$($*_sources)))
 	@echo "Building $@ for: $($*_sources)"
 	@rm -f $@
-	@$(eval $*_target_dir ?= $*)
 	@for source in $($*_sources); do \
 		target=$($*_target_dir)/$$(shsite2 info fullpathname $$source); \
 		depends=$$(shsite2 info depends $$source); \
@@ -19,6 +20,7 @@ $$target: $$source $($*_depends) $$depends\n\t\
 \$$(call $*_rule,\$$<,\$$@,\$$^)\
 	\n$*: $$target\n" >> $@; \
 	done
+	@$(eval $*_files:=$(filter-out $($*_target_dir)/%,$($*_files)))
 	@echo -e "$*_files := \$$(addprefix $($*_target_dir)/,\$$($*_files))\n" >> $@
 	@echo -e "$*: \$$($*_files)\n" >> $@
 	@echo -e "\$$($*_files): $($*_target_dir)/% : %\n\t@mkdir -p \`dirname \$$@\`\n\t@cp \$$< \$$@\n" >> $@
