@@ -29,6 +29,7 @@ echo -n "Updating DB ..." >&2
 for i in $@; do
 	# posts table: insert
 	# post_id; source; output_pathname; title; tags; update_timestamp; created_timestamp
+	[[ -e "$i" ]] || continue
 	fullpathname=$(shsite2 info fullpathname $i)
 	title=$(shsite2 info title $i)
 	tags=$(shsite2 get-key $i tags)
