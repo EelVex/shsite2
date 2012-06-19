@@ -6,7 +6,7 @@ _shsite2()
 	local cur prev opts base
 	cur="${COMP_WORDS[COMP_CWORD]}"
 	prev="${COMP_WORDS[COMP_CWORD-1]}"
-	opts="make publish info get-key parse"
+	opts="make remake publish info get-key parse updatedb"
 
 	case $prev in
 		info)
@@ -17,9 +17,15 @@ _shsite2()
 			# list of publish targets
 			return 0
 			;;
+		remake) ;&
 		make)
 			# Something like:
 			# make -rpn | sed -n -e '/^$/ { n ; /^[^ ]*:/p }'
+			return 0
+			;;
+		updatedb)
+			local dbs=$(ls *.db)
+			COMPREPLY=($(compgen -W "$dbs" -- "$cur"))
 			return 0
 			;;
 	esac
