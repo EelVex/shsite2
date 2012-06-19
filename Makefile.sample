@@ -16,7 +16,7 @@ $(SITES): % : %.mk
 	@echo "$*_indexes :=\$$(filter-out $($*_target_dir)/%,\$$($*_indexes))" >> $@
 	@echo -e "ifdef $*_indexes\n\
 $*: $*_index.db\n\
-$*_index.db: \$$($*_indexes)\n\t@shsite2 updatedb \$$@ \$$^\n\
+$*_index.db: \$$($*_indexes)\n\t@shsite2 updatedb \$$@ --empty \$$^\n\
 endif\n" >> $@
 	@for source in $($*_sources); do \
 		target=$($*_target_dir)/$$(shsite2 info fullpathname $$source); \
