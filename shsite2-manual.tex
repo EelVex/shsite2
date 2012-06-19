@@ -39,6 +39,14 @@
 
 \section{Makefile} % {{{
 
+Makefile variables:
+\begin{description}
+\item[\texttt{SITE\_sources}:] files to be parsed
+\item[\texttt{SITE\_files}:] files to be used as is (copied)
+\item[\texttt{SITE\_target\_dir}:] output directory for this site. Default value is \texttt{SITE/}
+\item[\texttt{SITE\_indexes}:] files used for indexing and site-map. Default value is to point to \texttt{SITE\_sources}.
+\end{description}
+
 Dynamic template with default, example
 \tabson
 \begin{verbatim}
