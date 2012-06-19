@@ -15,15 +15,16 @@ shift
 	sqlite3 $db "create table tags_posts(tp_id integer primary key autoincrement, tag_id integer, post_id integer)"
 )
 
-# No way of knowing about deleted files, so empty tables first :-/
-# TODO: Find a workaround.
 
-# EMPTY posts
-sqlite3 $db "delete from posts"
-# EMPTY tags
-sqlite3 $db "delete from tags"
-# EMPTY tags_posts
-sqlite3 $db "delete from tags_posts"
+# If "--empty" was requested, empty everything
+[[ "$1" = "--empty" ]] && shift && (
+	# EMPTY posts
+	sqlite3 $db "delete from posts"
+	# EMPTY tags
+	sqlite3 $db "delete from tags"
+	# EMPTY tags_posts
+	sqlite3 $db "delete from tags_posts"
+)
 
 echo -n "Updating DB ..." >&2
 for i in $@; do
