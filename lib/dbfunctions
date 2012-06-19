@@ -1,0 +1,6 @@
+- db-list-posts:
+[[ -e "$1.db" ]] && db=$1.db
+[[ -z "$db" ]] && db=$1
+selector=$2
+[[ -z "$selector" ]] && selector='*'
+sqlite3 $db "SELECT $selector FROM posts" | sed "s/|/' '/g;s/^/\"'/;s/$/'\"/"
