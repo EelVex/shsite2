@@ -34,6 +34,14 @@
 	will first run command ``com'' with arguments ``args'', then will run ``echo "file"'', will include ``file''
 	which will make the name of the variable: ``name-xxx-xxx''
 
+	\subsection{Differences between parse-commands and functions} % {{{
+		parse-commands are more robust: no need for character escaping etc
+
+		functions can be treated like variables, so they are better
+		suited for passing to other functions (like \texttt{map}) or parse-commands.
+
+	% }}}
+
 % }}} variables, commands and functions
 
 
@@ -42,7 +50,7 @@
 Makefile variables:
 \begin{description}
 \item[\texttt{SITE\_sources}:] files to be parsed
-\item[\texttt{SITE\_files}:] files to be used as is (copied)
+\item[\texttt{SITE\_files}:] files to be used as are (copied)
 \item[\texttt{SITE\_target\_dir}:] output directory for this site. Default value is \texttt{SITE/}
 \item[\texttt{SITE\_indexes}:] files used for indexing and site-map. Default value is to point to \texttt{SITE\_sources}.
 \end{description}
@@ -61,6 +69,26 @@ endef
 
 % }}} makefile
 
+
+% }}}
+
+\chapter{Usage/examples} % {{{
+
+	\section{Simple pages} % {{{
+
+	% }}}
+
+	\section{Site maps} % {{{
+
+	% }}}
+
+	\section{Archive lists} %{{{
+
+	%}}}
+
+	\section{Porting existing sites} % {{{
+
+	% }}}
 
 % }}}
 
@@ -94,8 +122,8 @@ endef
 	Use the first line on commands that take multi-line input, for options.
 	Separate options with spaces.
 
-	\glossary{SHS2_PARSE_COMMANDS_PATH}{Path for default shs2 parse-commands}
-	and \glossary{USER_PARSE_COMMANDS_PATH}{Path for user shs2 parse-commands} configuration variables point to paths where 
+	\glossary{\texttt{SHS2\_PARSE\_COMMANDS\_PATH}}{Path for default shs2 parse-commands}
+	and \glossary{\texttt{USER\_PARSE\_COMMANDS\_PATH}}{Path for user shs2 parse-commands} configuration variables point to paths where 
 	parse-commands reside (default and user respectively).
 	% }}}
 
@@ -106,39 +134,43 @@ endef
 
 \chapter{library functions} % {{{
 
-\section{standard \var{@stdfunctions}} % {{{
+	\section{standard \var{@stdfunctions}} % {{{
 
-	\subsection{map} % {{{
-		\var{map: '\var{func}' arg1 arg2 'arg3-a arg3-b' \ldots}
+		\subsection{map} % {{{
+			\var{map: '\var{func}' arg1 arg2 'arg3-a arg3-b' \ldots}
 
-		is the same as:\\
-		\var{func: arg1}\\
-		\var{func: arg2}\\
-		\var{func: arg3-a arg3-b}\\
-		\ldots
+			is the same as:\\
+			\var{func: arg1}\\
+			\var{func: arg2}\\
+			\var{func: arg3-a arg3-b}\\
+			\ldots
+
+			% }}}
+
+		\subsection{rapply}
+
+		\subsection{if, if-set} % {{{
 
 		% }}}
 
-	\subsection{rapply}
 
-	\subsection{if, if-set} % {{{
+	%}}}
+
+	\section{web \var{@webfunctions}} % {{{
+
+		\subsection{link}
+		\subsection{in-url, in-title}
 
 	% }}}
 
+	\section{db \var{@dbfunctions}} % {{{
 
-%}}}
+		\subsection{db-list-posts}
 
-\section{web \var{@webfunctions}} % {{{
-
-	\subsection{link}
-	\subsection{in-url, in-title}
+	% }}}
 
 % }}}
 
-% }}}
-
-\chapter{Usage}
-\chapter{Examples}
 
 \printglossary
 
