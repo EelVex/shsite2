@@ -1,6 +1,12 @@
 - map:
 body=$1; shift
 for i in $(seq $#); do ( eval "set ${!i}"; eval "$body"); done
+- rapply:
+arg=${!#}
+for i in $(seq $(($#-1))); do 
+	body=${!i}; 
+	( eval "set $arg"; eval "$body" ); 
+done | sed "s/\(^\|$\)/'/g"
 - if:
 (eval "[[ $1 ]]") && echo "$2" || echo "$3"
 - if-set:
