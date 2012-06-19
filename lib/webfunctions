@@ -1,0 +1,12 @@
+- link:
+title=$1; href=$2
+shift 2
+for i in $@; do
+ class="$class $i"
+done
+[[ ! -z "$class" ]] && class="class='$class'"
+echo "<a href='$href' $class>$title</a>"
+- in-url:
+shsite2 info fullpathname $1
+- in-title:
+shsite2 info title $1
