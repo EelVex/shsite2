@@ -15,12 +15,12 @@
 # });
 # </script>
 
-hlist=$(echo "$1" | grep -o "<h[0-9][^>]*>.*</h[0-9]>")
+hlist=$(echo "$1" | grep -o "<h[0-9][^>]*>.*</h[0-9]>" | sed "s/\(^\|$\)/'/g")
+eval "hlist=($hlist)" 
 
-i=0
-for hl in $hlist; do
+for i in $(seq 0 $((${#hlist[@]}-1))); do
+	hl=$(echo "${hlist[$i]}" | sed "s/^'//;s/'$//")
 	class=${hl:1:2}
 	title=$(echo $hl | sed 's#<[^>]*>##g')
 	echo "<a href='#toc$i' class='$class'>$title</a>"
-	((i++))
 done
