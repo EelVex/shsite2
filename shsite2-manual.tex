@@ -104,16 +104,36 @@ endef
 
 % }}} parse-commands
 
-\chapter{standard library functions} % {{{
-\var{@stdfunctions}
-\section{map}
-\var{map: '\var{func}' arg1 arg2 'arg3-a arg3-b' \ldots}
+\chapter{library functions} % {{{
 
-is the same as:\\
-\var{func: arg1}\\
-\var{func: arg2}\\
-\var{func: arg3-a arg3-b}\\
-\ldots
+\section{standard \var{@stdfunctions}} % {{{
+
+	\subsection{map} % {{{
+		\var{map: '\var{func}' arg1 arg2 'arg3-a arg3-b' \ldots}
+
+		is the same as:\\
+		\var{func: arg1}\\
+		\var{func: arg2}\\
+		\var{func: arg3-a arg3-b}\\
+		\ldots
+
+		% }}}
+
+	\subsection{rapply}
+
+	\subsection{if, if-set} % {{{
+
+	% }}}
+
+
+%}}}
+
+\section{web \var{@webfunctions}} % {{{
+
+	\subsection{link}
+	\subsection{in-url, in-title}
+
+% }}}
 
 % }}}
 
