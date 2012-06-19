@@ -26,11 +26,20 @@ shift
 	sqlite3 $db "delete from tags_posts"
 )
 
+remove_post() {
+	db=$1; src=$2
+	post_id=$(sqlite3 $db "SELECT post_id FROM posts WHERE source='$src'")
+	[[ -z "$post_id" ]] && return 0
+
+	sqlite3 $db "DELETE FROM posts WHERE post_id=$post_id"
+	sqlite3 $db "DELETE FROM tags_posts WHERE post_id=$post_id"
+}
+
 echo -n "Updating DB ..." >&2
 for i in $@; do
 	# posts table: insert
 	# post_id; source; output_pathname; title; tags; update_timestamp; created_timestamp
-	[[ -e "$i" ]] || continue
+	[[ -e "$i" ]] || { remove_post $db "$i"; continue; }
 	fullpathname=$(shsite2 info fullpathname $i)
 	title=$(shsite2 info title $i)
 	tags=$(shsite2 get-key $i tags)
