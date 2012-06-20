@@ -10,7 +10,7 @@ manpage: shsite2.man
 
 shsite2.man: shsite2-manual.tex
 
-utils: bin/shsite2_blocks
+utils: bin/shsite2_blocks bin/shsite2_block-put
 
 bin/% : %.c
 	gcc -O3 -Wall -o $@ $^
