@@ -19,11 +19,13 @@ cmd=$1
 shift
 
 case $cmd in
+	"blocks") ;&
+	"block-put")
+		$SHS2_PATH/bin/shsite2_$cmd "$@"
+		;;
 	"updatedb") ;&
 	"info") ;&
 	"get-key") ;&
-	"blocks") ;&
-	"block-put") ;&
 	"parse") 
 		$SHS2_PATH/shsite2-$cmd "$@"
 		;;
