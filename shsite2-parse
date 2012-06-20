@@ -81,10 +81,6 @@ shsite2-parse-do() { # {{{
 					args=${key#*: }
 					body=$($SHS2_PATH/shsite2-get-key $file_keys $fun)
 					if [[ 0 -eq $? ]]; then
-					# if key not found, let the block be 
-						echo -n "%{$block}%" > $file_block_output;
-						advance=1;
-					else
 						# Successful functions also may eliminate some %{...}%s so we have to reset the
 						# counter, to just before the function call. Do this by counting closing }%s up
 						# to this point.
@@ -102,6 +98,10 @@ shsite2-parse-do() { # {{{
 							echo "$body" > $file_block_output 		
 						}
 						)
+					else
+					# if key not found, let the block be 
+						echo -n "%{$block}%" > $file_block_output;
+						advance=1;
 					fi
 				else
 					## else, just replace the variable with its value
