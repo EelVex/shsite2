@@ -74,7 +74,7 @@ shsite2-parse-do() { # {{{
 			* ) 
 				block=$btype$block
 				key=$(echo $block) # No multiline variable definition for now
-				if [[ $(echo "$key" | grep -c '^[^:]*: ') -gt 0 ]]; then
+				if [[ "$key" == *': '* ]]; then
 					## If the variable is of the form "var: ...", treat the part after ": "
 					## as arguments to the function "var"
 					fun="${key%%: *}"

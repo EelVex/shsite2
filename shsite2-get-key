@@ -2,15 +2,8 @@
 
 key=$2
 file_keys=$1
-rt=0
 
 [[ -z "$key" ]] || [[ -z "$file_keys" ]] && echo "Usage: get-key <file> <key>" && exit 2
 [[ ! -e "$file_keys" ]] && echo "file '$file_keys' not found" && exit 3
 
-if [ $(grep -c "^- $key:$" $file_keys) -gt 0 ]; then
-	sed -n "/^- $key:$/,/^- .*:$/{/^- .*:$/"'!p}'  $file_keys
-else
-	rc=1
-fi
-
-exit $rc
+grep -q "^- $key:$" $file_keys && sed -n "/^- $key:$/,/^- .*:$/{/^- .*:$/"'!p}'  $file_keys
