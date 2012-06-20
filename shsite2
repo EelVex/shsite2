@@ -38,7 +38,7 @@ case $cmd in
 		fi
 		;;
 	"remake")
-		rm *.mk
+		rm -f *.mk
 		;&
 	"make")
 		if [[ -e "Makefile" ]]; then
