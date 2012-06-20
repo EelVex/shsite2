@@ -8,7 +8,7 @@ rt=0
 [[ ! -e "$file_keys" ]] && echo "file '$file_keys' not found" && exit 3
 
 if [ $(grep -c "^- $key:$" $file_keys) -gt 0 ]; then
-	sed -n "/^- $key:$/,/^- .*:$/p" $file_keys | sed '/^- .*:$/d' 
+	sed -n "/^- $key:$/,/^- .*:$/{/^- .*:$/"'!p}'  $file_keys
 else
 	rc=1
 fi

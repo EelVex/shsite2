@@ -50,7 +50,7 @@ shsite2-parse-do() { # {{{
 					# Successful commands may eliminate some %{...}%s so we have to reset the
 					# counter, to just before the command. Do this by counting closing }%s up
 					# to this point.
-					nbl=$(sed -n "1,/%{!$command/p" $file_parse | sed "\$s/%{!$command.*//g" | grep -o '}%' | wc -l)
+					nbl=$(sed -ne '1,/%{!'$command'/{s/%{!'$command'.*//g;s/}%/}%\n/g;p}' $file_parse | grep -c }%)
 					advance=$((nbl-block_count+1))
 					# Run command
 					shsite2 parse-commands $command "$data" > $file_block_output
@@ -88,7 +88,7 @@ shsite2-parse-do() { # {{{
 						# Successful functions also may eliminate some %{...}%s so we have to reset the
 						# counter, to just before the function call. Do this by counting closing }%s up
 						# to this point.
-						nbl=$(sed -n "1,/%{$fun: /p" $file_parse | sed "\$s/%{$fun: .*//g" | grep -o '}%' | wc -l)
+						nbl=$(sed -ne '1,/%{'$fun'/{s/%{'$fun'.*//g;s/}%/}%\n/g;p}' $file_parse | grep -c }%)
 						advance=$((nbl-block_count+1))
 						(
 						eval "set $args" 2> /dev/null ||  		# If this fails, 
