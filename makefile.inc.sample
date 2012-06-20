@@ -17,7 +17,7 @@ default_files += $(wildcard images/*)
 default_depends := template.html
 
 # Define the make rule for the site:
-define default_rule =
+define default_rule
 	@echo "Building ${2}"
 	@mkdir -p $$(dirname ${2})
 	@shsite2 parse ${1} template.html | shsite2 parse config.sl > ${2}
