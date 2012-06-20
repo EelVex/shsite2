@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
 
 	i=0;while(i<blpos[bli]-1 && !feof(fp)) {
 		r = fgetc(fp);i++;
-		if (i>blpos[s]+1) printf("%c",r);
+		if (i>blpos[s]+1) putchar(r);
 	}
 
 	fclose(fp);
