@@ -39,8 +39,9 @@ int main(int argc, char* argv[])
 		r = fgetc(fp);i++;
 		if (i<blpos[s]) printf("%c",r);
 	}
-	r=fgetc(fblock);while(EOF != (rn = fgetc(fblock))) {putchar(r);r=rn;}
-	while(!feof(fp)) printf("%c",fgetc(fp));
+	r=fgetc(fblock);while(EOF != (rn= fgetc(fblock))) {putchar(r);r=rn;}
+	if (r != '\n') putchar(r);
+	while(EOF != (r=fgetc(fp))) putchar(r);
 
 	fclose(fblock);
 	fclose(fp);
