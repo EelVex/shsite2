@@ -13,6 +13,7 @@ shsite2.man: shsite2-manual.tex
 utils: bin/shsite2_blocks bin/shsite2_block-put
 
 bin/% : %.c
+	@mkdir -p bin
 	gcc -O3 -Wall -o $@ $^
 
 clean:
