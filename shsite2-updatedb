@@ -40,9 +40,9 @@ for i in $@; do
 	# posts table: insert
 	# post_id; source; output_pathname; title; tags; update_timestamp; created_timestamp
 	[[ -e "$i" ]] || { remove_post $db "$i"; continue; }
-	fullpathname=$(shsite2 info fullpathname $i)
-	title=$(shsite2 info title $i)
-	tags=$(shsite2 get-key $i tags)
+	fullpathname=$($SHS2_PATH/shsite2-info fullpathname $i)
+	title=$($SHS2_PATH/shsite2-info title $i)
+	tags=$($SHS2_PATH/shsite2-get-key $i tags)
 	update=$(date "+%s")
 	created=$(date "+%s")
 	sqlite3 $db "INSERT OR replace INTO posts(source,output_pathname,title,tags,update_timestamp,created_timestamp)\

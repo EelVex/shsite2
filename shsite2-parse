@@ -29,7 +29,7 @@ shsite2-parse-do() { # {{{
 		##   Find next block {{{
 
 
-		block=`shsite2 blocks $block_count $file_parse`
+		block=$($SHS2_PATH/bin/shsite2_blocks $block_count $file_parse)
 
 
 		# }}}
@@ -79,7 +79,7 @@ shsite2-parse-do() { # {{{
 					## as arguments to the function "var"
 					fun="${key%%: *}"
 					args=${key#*: }
-					body=$(shsite2 get-key $file_keys $fun)
+					body=$($SHS2_PATH/shsite2-get-key $file_keys $fun)
 					if [[ -z "$body" ]]; then
 					# if key not found, let the block be 
 						echo -n "%{$block}%" > $file_block_output;
@@ -105,7 +105,7 @@ shsite2-parse-do() { # {{{
 					fi
 				else
 					## else, just replace the variable with its value
-					shsite2 get-key $file_keys $key > $file_block_output || 
+					$SHS2_PATH/shsite2-get-key $file_keys $key > $file_block_output || 
 					# if key not found, let the block be 
 					{
 						echo -n "%{$block}%" > $file_block_output;
@@ -118,7 +118,7 @@ shsite2-parse-do() { # {{{
 
 		## Put the the output where the block was
 
-		shsite2 block-put $file_block_output $block_count $file_parse > $file_tmp
+		$SHS2_PATH/bin/shsite2_block-put $file_block_output $block_count $file_parse > $file_tmp
 		cp $file_tmp $file_parse
 
 		((block_count+=advance))

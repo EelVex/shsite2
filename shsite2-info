@@ -11,8 +11,8 @@ file=$2
 
 case $info in
 	"name") 
-		name=$(shsite2 get-key $file name | shsite2 parse $file)
-		[[ -z "$name" ]] && name=$(shsite2 get-key $file filename | shsite2 parse $file)
+		name=$($SHS2_PATH/shsite2-get-key $file name | $SHS2_PATH/shsite2-parse $file)
+		[[ -z "$name" ]] && name=$($SHS2_PATH/shsite2-get-key $file filename | $SHS2_PATH/shsite2-parse $file)
 		[[ -z "$name" ]] && { 
 			name=${file##*/}
 			name=${name/.sl/.html}
@@ -20,23 +20,23 @@ case $info in
 		echo "$name"
 		;;
 	"title") 
-		title=$(shsite2 get-key $file title | shsite2 parse $file)
+		title=$($SHS2_PATH/shsite2-get-key $file title | $SHS2_PATH/shsite2-parse $file)
 		[[ -z "$title" ]] && { title=${file##*/}; title=${title%.*}; }
 		echo "$title"
 		;;
 	"path") 
-		path=$(shsite2 get-key $file path | shsite2 parse $file)
+		path=$($SHS2_PATH/shsite2-get-key $file path | $SHS2_PATH/shsite2-parse $file)
 		[[ -z "$path" ]] && path=$(dirname $file)
 		[[ "$path" = "." ]] && path=""
 		echo "$path"
 		;;
 	"fullpathname")
-		path=$(shsite2 info path $file)
-		name=$(shsite2 info name $file)
+		path=$($SHS2_PATH/shsite2-info path $file)
+		name=$($SHS2_PATH/shsite2-info name $file)
 		if [[ -z "$path" ]]; then echo "$name"; else echo "$path/$name"; fi
 		;;
 	"depends") 
-		depends=($(shsite2 get-key $file depends | shsite2 parse $file))
+		depends=($($SHS2_PATH/shsite2-get-key $file depends | $SHS2_PATH/shsite2-parse $file))
 		depends+=($(grep -o "%{@[^}]*}%" $file | sed 's/^%{@//;s/}%$//'))
 		echo $(for i in "${depends[@]}"; do
 			([[ -e $i ]] && echo "$i") || \
