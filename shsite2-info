@@ -46,9 +46,6 @@ case $info in
 		;;
 	*)
 		echo "<info> should be one of: path, name, fullpathname, title, depends."
-		rc=2
+		exit 2
 		;;
 esac
-
-
-exit $rc
