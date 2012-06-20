@@ -1,5 +1,5 @@
 
-all: manual manpage
+all: manual manpage utils
 
 manual: shsite2-manual.pdf
 
@@ -9,6 +9,11 @@ shsite2-manual.pdf: shsite2-manual.tex
 manpage: shsite2.man
 
 shsite2.man: shsite2-manual.tex
+
+utils: bin/shsite2_blocks
+
+bin/% : %.c
+	gcc -O3 -Wall -o $@ $^
 
 clean:
 	rm -f *.aux *.log *.toc
