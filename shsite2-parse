@@ -80,7 +80,7 @@ shsite2-parse-do() { # {{{
 					fun="${key%%: *}"
 					args=${key#*: }
 					body=$($SHS2_PATH/shsite2-get-key $file_keys $fun)
-					if [[ -z "$body" ]]; then
+					if [[ 0 -eq $? ]]; then
 					# if key not found, let the block be 
 						echo -n "%{$block}%" > $file_block_output;
 						advance=1;
