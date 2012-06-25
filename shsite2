@@ -34,8 +34,8 @@ case $cmd in
 			([[ -x $SHS2_PARSE_COMMANDS_PATH/$2 ]] || [[ -x $USER_PARSE_COMMANDS_PATH/$2 ]]) && echo "0"
 		else
 			parse_cmd=$1; shift
-			for path in $SHS2_PARSE_COMMANDS_PATH $USER_PARSE_COMMANDS_PATH; do
-				[[ -x $path/$parse_cmd ]] && $path/$parse_cmd "$@"
+			for path in $USER_PARSE_COMMANDS_PATH $SHS2_PARSE_COMMANDS_PATH; do
+				[[ -x $path/$parse_cmd ]] && $path/$parse_cmd "$@" && break
 			done
 		fi
 		;;
