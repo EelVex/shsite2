@@ -10,4 +10,4 @@ done | sed "s/\(^\|$\)/'/g"
 - if:
 (eval "[[ $1 ]]") && echo "$2" || echo "$3"
 - if-set:
-(eval "[[ ! -z $(echo \"$1\" | sed 's/%{.*}%//g' ) ]]") && echo "$2" || echo "$3"
+(eval "[[ ! -z $(echo \"$1\" | sed 's/%''{.*}''%//g' ) ]]") && echo "$2" || echo "$3"
