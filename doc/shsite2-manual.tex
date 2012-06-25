@@ -37,6 +37,8 @@
 	\subsection{Differences between parse-commands and functions} % {{{
 		parse-commands are more robust: no need for character escaping etc
 
+		parse-commads are always known so always evaluated. functions are context-depended.
+
 		functions can be treated like variables, so they are better
 		suited for passing to other functions (like \texttt{map}) or parse-commands.
 
