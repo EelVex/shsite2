@@ -1,0 +1,8 @@
+shsite2 helps you handle your online projects (websites, blogs etc), offline.
+
+What it can do in a nutshell:
+
+* Take your source and produce static web pages.
+* Publish your source using git, (s)ftp, rsync, etc.
+
+It is also, incidentally, a programming language.
