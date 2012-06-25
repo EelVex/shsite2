@@ -34,6 +34,10 @@
 	will first run command ``com'' with arguments ``args'', then will run ``echo "file"'', will include ``file''
 	which will make the name of the variable: ``name-xxx-xxx''
 
+	Parse-commands and includes are expanded immediately (leaving a warning
+	string if not found) while variables and functions keep their form
+	until they can be evaluated - if ever.
+
 	\subsection{Differences between parse-commands and functions} % {{{
 		parse-commands are more robust: no need for character escaping etc
 
