@@ -54,19 +54,21 @@ shsite2-parse-do() { # {{{
 					advance=$((nbl-block_count+1))
 					# Run command
 					shsite2 parse-commands $command "$data" > $file_block_output
-				# if not, just output the data and warn (stderr)
+				# if not, leave it as is
 				else
-					echo -n "($command): $data" > $file_block_output
+					echo -n "%{!$block}%" > $file_block_output
 					echo "parse-command \"$command\" not found" >&2
+					advance=1
 				fi
 			;; # }}}
 
 			# if it is a file (@), replace by file-contents {{{
 			"@") 
-				echo "file:$block" > $file_block_output
-				( [[ -e "$block" ]] && (cp $block $file_block_output) ) || # search in relative-to-current directory first
+				echo "%{@$block}%" > $file_block_output; advance=1
+				{ ( [[ -e "$block" ]] && (cp $block $file_block_output) ) || # search in relative-to-current directory first
 					( [[ -e "$USER_INC_PATH/$block" ]] && (cp $USER_INC_PATH/$block $file_block_output) ) || # then in user's includes
 					( [[ -e "$SHS2_LIB_PATH/$block" ]] && (cp $SHS2_LIB_PATH/$block $file_block_output) ) # then in shs2 library 
+				} && advance=0
 			;; # }}}
 
 			# all other cases: it is a key or function, replace by its value/output {{{
