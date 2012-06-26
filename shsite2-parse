@@ -2,7 +2,7 @@
 
 ###########################
 #
-#    Use keys of $<n> to parse $<n+1>, start from n=1
+#    Use keys of $<n-1> to parse $<n>, start from n=$#
 #    If only one argument given, get second file from stdin (waits for EOF)
 #
 #
@@ -140,9 +140,8 @@ file_tmp=`mktemp -t shsite2.XXXXXX`
 
 trap "rm -f $file_parse $file_keys $file_block_output $file_tmp" EXIT
 
-# previous $file_parse is the next $file_keys
-# so first $file_parse is $1
-cp $1 $file_parse
+# first $file_parse is $#
+cp ${!#} $file_parse
 
 # }}}
 
@@ -157,14 +156,11 @@ cp $1 $file_parse
 
 ## If got more than two arguments {{{
 
-while [[ $# -ge 2 ]]
+key_count=$(($#-1))
+while [[ $key_count -gt 0 ]]
 do
-	cp $file_parse $file_keys # previous parse is new keys
-	cp $2 $file_parse	# next arg is new parse
-
-	shsite2-parse-do "$file_keys" "$file_parse"
-
-	shift
+	shsite2-parse-do "${!key_count}" "$file_parse"
+	((key_count--))
 done
 
 # }}}
