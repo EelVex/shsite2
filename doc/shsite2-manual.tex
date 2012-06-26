@@ -16,66 +16,75 @@
 
 \chapter{How it works} % {{{
 
-\section{variables, parse-commands and functions} % {{{
+	\section{variables, parse-commands and functions} % {{{
 
-	Define variable or function: ``- key:''
+		Define variable or function: ``- key:''
 
-	Variables: \var{name}
+		Variables: \var{name}
 
-	Functions: \var{name: args}
+		Functions: \var{name: args}
 
-	Parse-Commands: \var{!command}
+		Parse-Commands: \var{!command}
 
-	Includes:  \var{@file}
+		Includes:  \var{@file}
 
-	Parsing: ``if it fails, it stays'' (a block that cannot be evaluated/expanded for any reason, keeps its current form).
+		Parsing: ``if it fails, it stays'' (a block that cannot be evaluated/expanded for any reason, keeps its current form).
 
-	Any nest level:
+		Any nest level:
 
-	\var{name-\var{!com: args}-\var{@\var{!echo "file"}} }
-	will first run command ``com'' with arguments ``args'', then will run ``echo "file"'', will include ``file''
-	which will make the name of the variable: ``name-xxx-xxx''
+		\var{name-\var{!com: args}-\var{@\var{!echo "file"}} }
+		will first run command ``com'' with arguments ``args'', then will run ``echo "file"'', will include ``file''
+		which will make the name of the variable: ``name-xxx-xxx''
 
-	Parse-commands and includes are expanded immediately (leaving a warning
-	string if not found) while variables and functions keep their form
-	until they can be evaluated - if ever.
+		Parse-commands and includes are expanded immediately (leaving a warning
+		string if not found) while variables and functions keep their form
+		until they can be evaluated - if ever.
 
-	\subsection{Differences between parse-commands and functions} % {{{
-		parse-commands are more robust: no need for character escaping etc
+		\subsection{Differences between parse-commands and functions} % {{{
+			parse-commads are always known so always evaluated. functions are context-depended.
+			example: 
+			\begin{enumerate}
+			\item \var{!if: '\var{date}' 'date is \var{date}' 'date is not set'}\\
+			\item \var{if: '\var{date}' 'date is \var{date}' 'date is not set'}
+			\end{enumerate}
+			The first one will always expand to ``date is \var{date}'' (and \var{date} may be further expanded later).
+			In the second case, if function \var{if} is included after all expansions of \var{date} have been made, it will 
+			correctly check if \var{date} is set or not.
 
-		parse-commads are always known so always evaluated. functions are context-depended.
+			parse-commands are more robust: no need for character escaping etc
 
-		functions can be treated like variables, so they are better
-		suited for passing to other functions (like \texttt{map}) or parse-commands.
+			functions can be treated like variables, so they are better
+			suited for passing to other functions (like \texttt{map}) or parse-commands.
 
-	% }}}
+		% }}}
 
-% }}} variables, commands and functions
-
-
-\section{Makefile} % {{{
-
-Makefile variables:
-\begin{description}
-\item[\texttt{SITE\_sources}:] files to be parsed
-\item[\texttt{SITE\_files}:] files to be used as are (copied)
-\item[\texttt{SITE\_target\_dir}:] output directory for this site. Default value is \texttt{SITE/}
-\item[\texttt{SITE\_indexes}:] files used for indexing and site-map. Default value is to point to \texttt{SITE\_sources}.
-\end{description}
-
-Dynamic template with default, example
-\tabson
-\begin{verbatim}
-define eelvex.net_rule =
-	@echo "Building ${2}"
-	@mkdir -p $$(dirname ${2})
-	@template=$$(shsite2 get-key ${1} template); \
-		shsite2 parse preconfig.slc ${1} $${template:-template.html} | shsite2 parse postconfig.slc > ${2}
-endef
-\end{verbatim}
+	% }}} variables, commands and functions
 
 
-% }}} makefile
+	\section{Makefile} % {{{
+
+	Makefile variables:
+	\begin{description}
+	\item[\texttt{SITE\_sources}:] files to be parsed
+	\item[\texttt{SITE\_files}:] files to be used as are (copied)
+	\item[\texttt{SITE\_target\_dir}:] output directory for this site. Default value is \texttt{SITE/}
+	\item[\texttt{SITE\_indexes}:] files used for indexing and site-map. Default value is to point to \texttt{SITE\_sources}.
+	\end{description}
+
+	Dynamic template with default, example
+	\tabson
+	\begin{verbatim}
+	define eelvex.net_rule =
+		@echo "Building ${2}"
+		@mkdir -p $$(dirname ${2})
+		@template=$$(shsite2 get-key ${1} template); \
+			shsite2 parse preconfig.slc ${1} $${template:-template.html} | shsite2 parse postconfig.slc > ${2}
+	endef
+	\end{verbatim}
+
+
+	% }}} makefile
+
 
 
 % }}}
@@ -135,6 +144,7 @@ endef
 	parse-commands reside (default and user respectively).
 	% }}}
 
+	\section{if} false: 0 or empty, true: everything else
 	\section{table-tex}
 	\section{code}
 
