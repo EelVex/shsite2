@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+key=$2
+file_keys=$1
+
+[[ -z "$key" ]] || [[ -z "$file_keys" ]] && echo "Usage: get-key-params <file> <key>" && exit 2
+[[ ! -e "$file_keys" ]] && echo "file '$file_keys' not found" && exit 3
+
+grep -q "^- $key:.*$" $file_keys && sed -n "s/^- $key:\(.*\)$/\1/p"  $file_keys
