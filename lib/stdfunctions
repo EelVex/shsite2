@@ -8,6 +8,6 @@ for i in $(seq $(($#-1))); do
 	( eval "set $arg"; eval "$body" ); 
 done | sed "s/\(^\|$\)/'/g"
 - if:
-(eval "[[ $1 ]]") && echo "$2" || echo "$3"
+echo "%{!if: \"$1\" \"$2\" \"$3\"}%"
 - if-set:
 (eval "[[ ! -z $(echo \"$1\" | sed 's/%''{.*}''%//g' ) ]]") && echo "$2" || echo "$3"
