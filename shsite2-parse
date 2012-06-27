@@ -37,6 +37,8 @@ shsite2-parse-do() { # {{{
 		###########################
 		##   Replace block
 
+		replace_block=$file_block_output
+
 		## What is this block?
 		btype=${block:0:1}; block=${block:1};
 		case $btype in
@@ -65,9 +67,9 @@ shsite2-parse-do() { # {{{
 			# if it is a file (@), replace by file-contents {{{
 			"@") 
 				echo "%{@$block}%" > $file_block_output; advance=1
-				{ ( [[ -e "$block" ]] && (cp $block $file_block_output) ) || # search in relative-to-current directory first
-					( [[ -e "$USER_INC_PATH/$block" ]] && (cp $USER_INC_PATH/$block $file_block_output) ) || # then in user's includes
-					( [[ -e "$SHS2_LIB_PATH/$block" ]] && (cp $SHS2_LIB_PATH/$block $file_block_output) ) # then in shs2 library 
+				{ { [[ -e "$block" ]] && replace_block="$block"; } || # search in relative-to-current directory first
+					{ [[ -e "$USER_INC_PATH/$block" ]] && replace_block="$USER_INC_PATH/$block"; } || # then in user's includes
+					{ [[ -e "$SHS2_LIB_PATH/$block" ]] && replace_block="$SHS2_LIB_PATH/$block"; } # then in shs2 library 
 				} && advance=0
 			;; # }}}
 
@@ -117,7 +119,7 @@ shsite2-parse-do() { # {{{
 
 		## Put the the output where the block was
 
-		$SHS2_PATH/bin/shsite2_block-put $file_block_output $block_count $file_parse > $file_tmp
+		$SHS2_PATH/bin/shsite2_block-put $replace_block $block_count $file_parse > $file_tmp
 		cp $file_tmp $file_parse
 
 		((block_count+=advance))
