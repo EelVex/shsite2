@@ -3,8 +3,8 @@ body=$1; shift
 for i in $@; do ( eval "set ${!i}"; eval "$body"); done
 - rapply:
 arg=${!#}
-for i in $(seq $(($#-1))); do 
-	body=${!i}; 
+for i in ${@:1:$#-1}; do
+	body=$i;
 	( eval "set $arg"; eval "$body" ); 
 done | sed "s/\(^\|$\)/'/g"
 - if:
