@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+eval "set $1"
+
 [[ -e "$1.db" ]] && db=$1.db
 [[ -z "$db" ]] && db=$1
 selector=$2
