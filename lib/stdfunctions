@@ -1,6 +1,6 @@
 - map:
 body=$1; shift
-for i in $(seq $#); do ( eval "set ${!i}"; eval "$body"); done
+for i in $@; do ( eval "set ${!i}"; eval "$body"); done
 - rapply:
 arg=${!#}
 for i in $(seq $(($#-1))); do 
