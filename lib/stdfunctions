@@ -1,9 +1,12 @@
 - map:
 body=$1; shift
-for i in $@; do ( eval "set ${!i}"; eval "$body"); done
+for i in "$@"; do ( eval "set $i"; eval "$body"); done
+- map-fun:
+fun=$1; shift
+for i in "$@"; do echo "%{$fun: $i}%"; done
 - rapply:
 arg=${!#}
-for i in ${@:1:$#-1}; do
+for i in "${@:1:$#-1}"; do
 	body=$i;
 	( eval "set $arg"; eval "$body" ); 
 done | sed "s/\(^\|$\)/'/g"

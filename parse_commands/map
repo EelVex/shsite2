@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+eval "set "$@
+
+body=$1; shift
+for i in "$@"; do ( eval "set $i"; eval "$body"); done

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+eval "set "$@
+
+fun=$1; shift
+for i in "$@"; do echo "%{$fun: $i}%" done
