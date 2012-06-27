@@ -3,4 +3,4 @@
 eval "set "$@
 
 fun=$1; shift
-for i in "$@"; do echo "%{$fun: $i}%" done
+for i in "$@"; do echo "%{$fun: $i}%"; done
