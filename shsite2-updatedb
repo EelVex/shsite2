@@ -10,7 +10,7 @@ shift
 [[ ! -e "$db" ]] && (
 	# Create database tables
 	echo "Creating database $db" >&2
-	sqlite3 $db "create table posts(post_id integer primary key autoincrement, source varchar(255), output_pathname varchar(255) unique, title varchar(255), tags varchar(255), update_timestamp integer, created_timestamp integer)"
+	sqlite3 $db "create table posts(post_id integer primary key autoincrement, source varchar(255), output_pathname varchar(255) unique, title varchar(255), update_timestamp integer, created_timestamp integer)"
 	sqlite3 $db "create table tags(tag_id integer primary key autoincrement, tag varchar(255) unique)"
 	sqlite3 $db "create table tags_posts(tp_id integer primary key autoincrement, tag_id integer, post_id integer)"
 )
@@ -47,8 +47,8 @@ for i in $@; do
 	created=$($SHS2_PATH/shsite2-get-key $i created) || created=$($SHS2_PATH/shsite2-get-key $i date)
 	(echo $update | grep -q '^[0-9]\{10\}$') || update=$(date "+%s" -d  "$(echo "$update" | tr -d %}{)") || update=$(date "+%s")
 	(echo $created | grep -q '^[0-9]\{10\}$') || created=$(date "+%s" -d "$created")
-	sqlite3 $db "INSERT OR replace INTO posts(source,output_pathname,title,tags,update_timestamp,created_timestamp)\
-		VALUES('$i','$fullpathname','$title','$tags','$update','$created')"
+	sqlite3 $db "INSERT OR replace INTO posts(source,output_pathname,title,update_timestamp,created_timestamp)\
+		VALUES('$i','$fullpathname','$title','$update','$created')"
 	post_id=$(sqlite3 $db "SELECT post_id FROM posts WHERE output_pathname='$fullpathname'")
 	for tag in $tags; do
 		# tags table: insert if not exists
